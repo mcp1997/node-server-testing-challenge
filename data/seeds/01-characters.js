@@ -1,13 +1,14 @@
 
 exports.seed = function(knex) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
+  // Deletes ALL existing entries and resets ids
+  return knex('characters')
+    .truncate()
     .then(function () {
       // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+      return knex('characters').insert([
+        { char_name: 'marth' },
+        { char_name: 'captain falcon' },
+        { char_name: 'jigglypuff' },
       ]);
     });
 };
