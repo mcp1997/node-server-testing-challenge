@@ -11,7 +11,15 @@ async function create(character) {
   return newChar
 }
 
+async function remove(id) {
+  const deleted = await getByID(id)
+  let deletedCopy = JSON.parse(JSON.stringify(deleted))
+  await db('characters').where('char_id', id).del()
+  return deletedCopy
+}
+
 module.exports = {
   getByID,
-  create
+  create,
+  remove
 }

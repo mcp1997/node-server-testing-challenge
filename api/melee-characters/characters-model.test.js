@@ -25,4 +25,16 @@ describe('Melee characters db access functions', () => {
       expect(newChar).toMatchObject({ char_id: 3, char_name: 'fox' })
     })
   })
+
+  describe('Char.remove', () => {
+    it('deletes a character from the database', async () => {
+      await Char.remove(2)
+      const rows = await db('characters')
+      expect(rows).toHaveLength(1)
+    })
+    it('resolves to the deleted character', async () => {
+      const deletedChar = await Char.remove(2)
+      expect(deletedChar).toMatchObject({ char_id: 2, char_name: 'captain falcon' })
+    })
+  })
 })
