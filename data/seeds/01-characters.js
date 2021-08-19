@@ -8,7 +8,6 @@ exports.seed = function(knex) {
       return knex('characters').insert([
         { char_name: 'marth' },
         { char_name: 'captain falcon' },
-        { char_name: 'jigglypuff' },
       ]);
     });
 };
