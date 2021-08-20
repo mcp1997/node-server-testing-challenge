@@ -29,7 +29,7 @@ server.post('/characters', validateChar, (req, res, next) => {
 })
 
 async function validateID(req, res, next) {
-  const existing = await db('characters').where('char_id', req.params.id)
+  const [existing] = await db('characters').where('char_id', req.params.id)
 
   if (!existing) {
     res.status(404).json({
@@ -40,8 +40,12 @@ async function validateID(req, res, next) {
   }
 }
 
-server.delete('/characters/:id', validateID, (req, res) => {
-  res.status(200)
+server.delete('/characters/:id', validateID, (req, res, next) => {
+  Chars.remove(req.params.id)
+    .then(deleted => {
+      res.status(200).json(deleted)
+    })
+    .catch(next)
 })
 
 server.use((err, req, res, next) => { // eslint-disable-line

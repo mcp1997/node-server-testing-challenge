@@ -17,29 +17,39 @@ describe('[POST] /characters', () => {
   it('responds with a 422 if char_name is invalid', async () => {
     const res = await request(server).post('/characters').send({})
     expect(res.status).toBe(422)
-  }, 5000)
+  }, 2500)
   it('should return a 201 OK status', async () => {
     const res = await request(server).post('/characters').send({ char_name: 'jigglypuff' })
     expect(res.status).toBe(201)
-  })
+  }, 2500)
   it('responds with the newly created character', async () => {
     let res = await request(server).post('/characters').send({ char_name: 'jigglypuff' })
     expect(res.body).toMatchObject({ char_name: 'jigglypuff' })
     res = await request(server).post('/characters').send({ char_name: 'falco' })
     expect(res.body).toMatchObject({ char_name: 'falco' })
-  })
+  }, 2500)
 })
 
 describe('[DELETE] /characters/:id', () => {
-  it('responds with a 404 if provided char_id does not exist', async () => {
-    const res = await request(server).delete('/jokes/1')
-    console.log(res)
-    expect(res.status).toBe(404)
-  })
+  it('responds with a 404 if provided char_id does not exist', () => {
+    return request(server)
+      .delete('/characters/12345')
+      .then(res => {
+        expect(res.status).toBe(404)
+      })
+  }, 2500)
   it('should return a 200 status', async () => {
-
-  })
+    return request(server)
+      .delete('/characters/2')
+      .then(res => {
+        expect(res.status).toBe(200)
+      })
+  }, 2500)
   it('responds with the deleted character', async () => {
-
-  })
+    return request(server)
+      .delete('/characters/2')
+      .then(res => {
+        expect(res.body).toMatchObject({ char_id: 2, char_name: 'captain falcon' })
+      })
+  }, 2500)
 })
