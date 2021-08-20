@@ -1,5 +1,6 @@
 const express = require('express')
 const Chars = require('./melee-characters/characters-model')
+const db = require('../data/dbConfig')
 
 const server = express()
 
@@ -27,8 +28,20 @@ server.post('/characters', validateChar, (req, res, next) => {
     .catch(next)
 })
 
-server.delete('/characters/:id', (req, res) => {
-  res.end()
+async function validateID(req, res, next) {
+  const existing = await db('characters').where('char_id', req.params.id)
+
+  if (!existing) {
+    res.status(404).json({
+      messsage: `character with char_id ${req.params.id} not found`
+    })
+  } else {
+    next()
+  }
+}
+
+server.delete('/characters/:id', validateID, (req, res) => {
+  res.status(200)
 })
 
 server.use((err, req, res, next) => { // eslint-disable-line

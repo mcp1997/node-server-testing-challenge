@@ -17,7 +17,7 @@ describe('[POST] /characters', () => {
   it('responds with a 422 if char_name is invalid', async () => {
     const res = await request(server).post('/characters').send({})
     expect(res.status).toBe(422)
-  })
+  }, 5000)
   it('should return a 201 OK status', async () => {
     const res = await request(server).post('/characters').send({ char_name: 'jigglypuff' })
     expect(res.status).toBe(201)
@@ -32,7 +32,9 @@ describe('[POST] /characters', () => {
 
 describe('[DELETE] /characters/:id', () => {
   it('responds with a 404 if provided char_id does not exist', async () => {
-    const res = await request(server).del()
+    const res = await request(server).delete('/jokes/1')
+    console.log(res)
+    expect(res.status).toBe(404)
   })
   it('should return a 200 status', async () => {
 
